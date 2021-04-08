@@ -2,6 +2,7 @@
     "name": "tensorflowjs",
     "version": "1.0.0",
     "dependencies": {
-        "express": "latest"
+        "express": "latest",
+        "three": "^0.127.0"
     }
 }

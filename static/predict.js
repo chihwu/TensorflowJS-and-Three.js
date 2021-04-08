@@ -87,11 +87,14 @@ if (getUserMediaSupported()) {
     async function predictWebcam() {
          // Capture an image from the webcam using the Tensorflow.js data API
         //and store it as a tensor (resize to 224 x 224 size for mobilenet delivery).
-        const webcam = await tf.data.webcam(video, {
-            resizeWidth: 224,
-            resizeHeight: 224,
-        });
 
+        /*  // this code will cause webcam to flicker
+        // const webcam = await tf.data.webcam(video, {
+        //     resizeWidth: 224,
+        //     resizeHeight: 224,
+        // });
+        */
+        tf.engine().startScope();
         // Capture an image tensor at a specific point in time.
         // const img = await webcam.capture();
         // Pass the data to the loaded mobilenet model.
@@ -117,7 +120,9 @@ if (getUserMediaSupported()) {
                     }).slice(0, 1);
 
         console.log(top1[0].className);
-
+        tf.engine().endScope();  // this will clean up memory to avoid memory leak
+        
+        // Call this function again to keep predicting when the browser is ready.
         window.requestAnimationFrame(predictWebcam);
     }
 
